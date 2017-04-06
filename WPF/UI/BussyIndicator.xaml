@@ -1,0 +1,99 @@
+<UserControl x:Class="Eterra.Sentinel.MainPlugin.Displays.MainDisplayModule.Views.CSV.Controls.BusyIndicator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<UserControl.Resources>
+		<SolidColorBrush Color="CornflowerBlue" x:Key="CirclesColor" />
+		<Storyboard x:Key="ControlStoryboard">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetName="SpinnerRotate" Storyboard.TargetProperty="Angle" RepeatBehavior="Forever">
+				<DiscreteDoubleKeyFrame KeyTime="00:00:00.200" Value="40" />
+				<DiscreteDoubleKeyFrame KeyTime="00:00:00.400" Value="80" />
+				<DiscreteDoubleKeyFrame KeyTime="00:00:00.600" Value="120" />
+				<DiscreteDoubleKeyFrame KeyTime="00:00:00.800" Value="160" />
+				<DiscreteDoubleKeyFrame KeyTime="00:00:01.000" Value="200" />
+				<DiscreteDoubleKeyFrame KeyTime="00:00:01.200" Value="240" />
+				<DiscreteDoubleKeyFrame KeyTime="00:00:01.400" Value="280" />
+				<DiscreteDoubleKeyFrame KeyTime="00:00:01.600" Value="320" />
+				<DiscreteDoubleKeyFrame KeyTime="00:00:01.800" Value="360" />
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</UserControl.Resources>
+	<Viewbox HorizontalAlignment="Center" VerticalAlignment="Center">
+		<Grid Background="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<Canvas HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" RenderTransformOrigin="0.5,0.5" Margin="20">
+				<Ellipse Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="{StaticResource CirclesColor}" Opacity="1.0">
+					<Ellipse.RenderTransform>
+						<TransformGroup>
+							<RotateTransform CenterX="50" CenterY="50" Angle="0" />
+						</TransformGroup>
+					</Ellipse.RenderTransform>
+				</Ellipse>
+				<Ellipse Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="{StaticResource CirclesColor}" Opacity="0.9">
+					<Ellipse.RenderTransform>
+						<TransformGroup>
+							<RotateTransform CenterX="50" CenterY="50" Angle="-40" />
+						</TransformGroup>
+					</Ellipse.RenderTransform>
+				</Ellipse>
+				<Ellipse Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="{StaticResource CirclesColor}" Opacity="0.8">
+					<Ellipse.RenderTransform>
+						<TransformGroup>
+							<RotateTransform CenterX="50" CenterY="50" Angle="-80" />
+						</TransformGroup>
+					</Ellipse.RenderTransform>
+				</Ellipse>
+				<Ellipse Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="{StaticResource CirclesColor}" Opacity="0.7">
+					<Ellipse.RenderTransform>
+						<TransformGroup>
+							<RotateTransform CenterX="50" CenterY="50" Angle="-120" />
+						</TransformGroup>
+					</Ellipse.RenderTransform>
+				</Ellipse>
+				<Ellipse Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="{StaticResource CirclesColor}" Opacity="0.6">
+					<Ellipse.RenderTransform>
+						<TransformGroup>
+							<RotateTransform CenterX="50" CenterY="50" Angle="-160" />
+						</TransformGroup>
+					</Ellipse.RenderTransform>
+				</Ellipse>
+				<Ellipse Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="{StaticResource CirclesColor}" Opacity="0.5">
+					<Ellipse.RenderTransform>
+						<TransformGroup>
+							<RotateTransform CenterX="50" CenterY="50" Angle="-200" />
+						</TransformGroup>
+					</Ellipse.RenderTransform>
+				</Ellipse>
+				<Ellipse Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="{StaticResource CirclesColor}" Opacity="0.4">
+					<Ellipse.RenderTransform>
+						<TransformGroup>
+							<RotateTransform CenterX="50" CenterY="50" Angle="-240" />
+						</TransformGroup>
+					</Ellipse.RenderTransform>
+				</Ellipse>
+				<Ellipse Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="{StaticResource CirclesColor}" Opacity="0.3">
+					<Ellipse.RenderTransform>
+						<TransformGroup>
+							<RotateTransform CenterX="50" CenterY="50" Angle="-280" />
+						</TransformGroup>
+					</Ellipse.RenderTransform>
+				</Ellipse>
+				<Ellipse Width="20" Height="20" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="{StaticResource CirclesColor}" Opacity="0.2">
+					<Ellipse.RenderTransform>
+						<TransformGroup>
+							<RotateTransform CenterX="50" CenterY="50" Angle="-320" />
+						</TransformGroup>
+					</Ellipse.RenderTransform>
+				</Ellipse>
+				<Canvas.RenderTransform>
+					<RotateTransform x:Name="SpinnerRotate" Angle="0" />
+				</Canvas.RenderTransform>
+				<Canvas.Triggers>
+					<EventTrigger RoutedEvent="Canvas.Loaded">
+						<EventTrigger.Actions>
+							<BeginStoryboard Storyboard="{StaticResource ControlStoryboard}" />
+						</EventTrigger.Actions>
+					</EventTrigger>
+				</Canvas.Triggers>
+			</Canvas>
+		</Grid>
+	</Viewbox>
+</UserControl>
