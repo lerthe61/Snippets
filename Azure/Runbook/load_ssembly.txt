@@ -1,0 +1,2 @@
+All assemblies are loaded into c:\Module\Azure\ (or c:\User\Modules\[moduleName]\[moduleName\.dll for Add-Type Path parameter)
+i.e. [System.Reflection.Assembly]::LoadFrom("C:\Modules\Azure\Microsoft.ApplicationInsights.dll")
