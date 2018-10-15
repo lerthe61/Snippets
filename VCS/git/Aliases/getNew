@@ -1,0 +1,1 @@
+!git add *; git stash; if [ $( git status --porcelain | wc -l ) -lt 1 ]; then git tfs pull -r --all; git stash pop; else echo "Uncommited changes detected"; exit 1; fi
