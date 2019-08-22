@@ -1,0 +1,2 @@
+Autokudos everyone's on feed
+document.querySelectorAll('button.js-add-kudo').forEach(node => node.click())
