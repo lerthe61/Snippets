@@ -1,0 +1,183 @@
+------------------------------------------------------------------------------------------
+ENVIRONMENT
+------------------------------------------------------------------------------------------
+Windows 10
+PowerShell 5.1
+
+
+------------------------------------------------------------------------------------------
+DEPENDENCIES
+------------------------------------------------------------------------------------------
+Java 1.8 (on path and JAVA_HOME) http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html
+Ant 1.9.7 (on path and ANT_HOME) http://ant.apache.org/
+Zookeeper 3.4.6 http://zookeeper.apache.org/
+Git for Windows https://git-scm.com/download/win
+
+
+------------------------------------------------------------------------------------------
+USING SOLR BINARIES
+------------------------------------------------------------------------------------------
+# Get Solr from Apache project site
+http://lucene.apache.org/solr/
+
+
+------------------------------------------------------------------------------------------
+BUILDING SOLR
+------------------------------------------------------------------------------------------
+# Create local repository in the current directory
+git clone http://git-wip-us.apache.org/repos/asf/lucene-solr.git .
+
+# List all remote branches available
+git branch -r
+
+# Checkout a branch
+git checkout branch_6_3
+
+# Apply a patch
+git apply SOLR-9527.patch
+
+# Compile full solr project from project root
+ant compile
+
+# Build distribution from ./solr
+ant dist
+
+# Build server from ./solr
+ant server
+
+# To work with solr source in eclipse set up
+# the project for the IDE
+ant eclipse
+
+
+------------------------------------------------------------------------------------------
+STARTING AND STOPPING ZOOKEEPER IN THE BACKGROUND
+------------------------------------------------------------------------------------------
+# Set ZOOKEEPER_HOME
+$env:ZOOKEEPER_HOME="C:\Java\zookeeper-3.4.6"
+
+# Start zookeeper in background
+$job = start-job -Name zooKpr -ScriptBlock {& "$env:ZOOKEEPER_HOME\bin\zkServer.cmd"}
+
+# Get job info for zookeeper job (get-job for all session jobs)
+get-job -Name zooKpr
+
+# Read output from zookeeper job
+receive-job -Name zooKpr
+
+# Stop the zookeeper job
+stop-job -Name zooKpr
+
+# Remove the zookeeper job from the session job table
+remove-job -Name zooKpr
+
+
+------------------------------------------------------------------------------------------
+ZOOKEEPER INTERACTIVE SHELL
+------------------------------------------------------------------------------------------
+# Set ZOOKEEPER_HOME
+$env:ZOOKEEPER_HOME="C:\Java\zookeeper-3.4.6"
+
+# Start the interactive shell
+& "$env:ZOOKEEPER_HOME\bin\zkCli.cmd"
+
+# List objects on path
+ls /
+
+# Remove solr CHROOT from path
+rmr /solr
+
+# Quit shell
+quit
+
+
+------------------------------------------------------------------------------------------
+Bootstrap zookeeper
+------------------------------------------------------------------------------------------
+# Set SOLR_HOME
+$env:SOLR_HOME="C:\Java\solr-6.3.0p"
+
+# Create a new zookeeper CHROOT
+& "$env:SOLR_HOME\server\scripts\cloud-scripts\zkcli.bat" -zkhost localhost:2181 -cmd makepath /solr
+
+# Upload solr.xml to the new CHROOT
+& "$env:SOLR_HOME\server\scripts\cloud-scripts\zkcli.bat" -zkhost localhost:2181 -cmd putfile /solr/solr.xml /data/solr/conf/solr.xml
+
+& "$env:SOLR_HOME\server\scripts\cloud-scripts\zkcli.bat" -zkhost localhost:2181 -cmd putfile /solr/solr.xml c:\Apache\solr-6.6.6\server\solr\solr.xml 
+
+# Add a collection configuration to a CHROOT
+& "$env:SOLR_HOME\server\scripts\cloud-scripts\zkcli.bat" -zkhost localhost:2181/solr -cmd upconfig -confdir /data/solr/conf/test -confname testconf
+
+
+------------------------------------------------------------------------------------------
+STARTING MULTIPLE SOLR NODES
+------------------------------------------------------------------------------------------
+# Set SOLR_HOME
+$env:SOLR_HOME="C:\Java\solr-6.3.0p"
+
+# Start 3 solr nodes on ports 8171, 8181, 8191
+# First set the log directory, then start Solr
+$env:SOLR_LOGS_DIR="C:\solr\logs\8171"
+& "$env:SOLR_HOME\bin\solr.cmd" start -cloud -zkhost localhost:2181/solr -h $env:computername -p 8171 -s /data/solr/8171
+
+$env:SOLR_LOGS_DIR="C:\solr\logs\8181"
+& "$env:SOLR_HOME\bin\solr.cmd" start -cloud -zkhost localhost:2181/solr -h $env:computername -p 8181 -s /data/solr/8181
+
+$env:SOLR_LOGS_DIR="C:\solr\logs\8191"
+& "$env:SOLR_HOME\bin\solr.cmd" start -cloud -zkhost localhost:2181/solr -h $env:computername -p 8191 -s /data/solr/8191
+
+# Stop all solr ports
+& "$env:SOLR_HOME\bin\solr.cmd" stop -all
+
+------------------------------------------------------------------------------------------
+LOAD DATA TO SOLR WITH POST.BAT
+------------------------------------------------------------------------------------------
+C:\Data\solr\post.bat http://localhost:8181/solr/test/update /Data/raw/test.xml
+
+
+------------------------------------------------------------------------------------------
+COLLECTIONS ADMIN API
+------------------------------------------------------------------------------------------
+# Create a collection
+http://localhost:8181/solr/admin/collections?action=CREATE&name=test&numShards=2&replicationFactor=1&maxShardsPerNode=1&collection.configName=testconf&createNodeSet=NY07LP521696:8171_solr,NY07LP521696:8181_solr&createNodeSet.shuffle=false
+
+# Create a collection with imlicit routing
+http://localhost:8181/solr/admin/collections?action=CREATE&name=test&router.name=implicit&shards=test1,test2&replicationFactor=1&maxShardsPerNode=1&collection.configName=testconf&createNodeSet=NY07LP521696:8171_solr,NY07LP521696:8181_solr&createNodeSet.shuffle=false
+
+# Delete a collection
+http://localhost:8181/solr/admin/collections?action=DELETE&name=test
+
+# Create an alias
+http://localhost:8181/solr/admin/collections?action=CREATEALIAS&name=prod&collections=test2
+
+# Delete an alias
+http://localhost:8181/solr/admin/collections?action=DELETEALIAS&name=prod
+
+# Backup a collection
+http://localhost:8181/solr/admin/collections?action=BACKUP&collection=test&name=copy&location=%2FData%2Fsolr%2Fbkp&async=1234
+
+# Restore a collection
+http://localhost:8191/solr/admin/collections?action=RESTORE&name=copy&location=%2FData%2Fsolr%2Fbkp&collection=test2&async=1234&maxShardsPerNode=1&createNodeSet=NY07LP521696:8181_solr,NY07LP521696:8191_solr
+
+# Add replicas
+http://localhost:8191/solr/admin/collections?action=ADDREPLICA&collection=test2&shard=shard1&node=NY07LP521696:8181_solr
+http://localhost:8191/solr/admin/collections?action=ADDREPLICA&collection=test2&shard=shard2&node=NY07LP521696:8171_solr
+
+# Check async status
+http://localhost:8181/solr/admin/collections?action=REQUESTSTATUS&requestid=1234
+
+# Clear async status
+http://localhost:8181/solr/admin/collections?action=DELETESTATUS&requestid=1234
+
+
+------------------------------------------------------------------------------------------
+HANDY SOLR URLS
+------------------------------------------------------------------------------------------
+# Simple queries with shard info
+http://localhost:8181/solr/test/query?q=*:*&fl=*+[shard]
+
+# Commit a collection update
+http://localhost:8181/solr/test/update?commit=true
+
+# Force a collection optimize
+curl http://localhost:8181/solr/test/update -F stream.body='<optimize />'
