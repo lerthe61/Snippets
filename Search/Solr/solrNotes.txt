@@ -181,3 +181,23 @@ http://localhost:8181/solr/test/update?commit=true
 
 # Force a collection optimize
 curl http://localhost:8181/solr/test/update -F stream.body='<optimize />'
+
+
+// My Notes, not merged yet
+1. Set JAVA_HOME 
+2. Create a zoo.cfg, specify data folder
+3. Do NOT use Powershell ISE!
+4. Change path to solr.xml
+5. Where is test.xml?
+6. Download SaxonHE9-9-1-4
+7. Run Transform -s:source -xsl:stylesheet -o:output to create a SOLR.xml (xml that can be injected into SOLR)
+8. Custom plugin should be stored C:\WK_CustomSolr
+
+How to debug Solr
+Prerequisites: 
+* Local Solr
+* Local Couchbase
+Steps:
+1. Use -a "-Xdebug -Xrunjdwp:transport=dt_socket,address=127.0.0.1:9998,server=y,suspend=n" to start listening on port 9998 for Java Debugger
+2. In IDE select to connect to Remote Java on port 9998
+3. Build package and place it in c:\WK_CustomSolr\
