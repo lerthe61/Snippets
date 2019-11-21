@@ -1,0 +1,8 @@
+git filter-branch --env-filter \
+'if [ $GIT_COMMIT = 3f462cb66a795234167bea0ef76ca791af172cc8 ]
+then 
+	export GIT_AUTHOR_DATE="Fri Oct 25 21:38:53 2009 -0500" 
+	export GIT_COMMITTER_DATE="Fri Oct 25 21:38:53 2009 -0500" 
+fi' 
+
+GIT_COMMITTER_DATE="Fri Oct 25 21:38:53 2009 -0500" git commit --amend --no-edit --date "Fri Oct 25 21:38:53 2009 -0500"
