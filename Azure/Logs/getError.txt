@@ -1,0 +1,1 @@
+(Get-AzLog -CorrelationId '754fdaad-8bb7-46c1-be7a-aaa8d28d04da').Properties.Content.values
