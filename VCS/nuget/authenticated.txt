@@ -1,0 +1,1 @@
+./Nuget.exe sources add -Name "SSRPackages" -UserName <login> -Password <password> -source <feed>
