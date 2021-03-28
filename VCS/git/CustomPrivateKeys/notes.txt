@@ -1,0 +1,1 @@
+Scripts here are a way to resolve the situation when there is a set of repositories that can be accessed via a specific private key.
