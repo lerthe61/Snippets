@@ -1,1 +1,5 @@
 Scripts here are a way to resolve the situation when there is a set of repositories that can be accessed via a specific private key.
+Overall the idea consists of a few steps:
+1. Creat a custom config in ~/.ssh with desired private key and remote repository mapping (i.e., bitbucket.org) - setup_config.sh
+2. Clone all repositories from the host
+3. For every repository set up a local override to use a new config (plus committer pseudonym, if required) - override_key.sh
