@@ -1,0 +1,10 @@
+cd "c:\Program Files\Docker\"
+./DockerCli.exe -SwitchDaemon
+
+or
+
+./DockerCli.exe -SwitchLinuxEngine
+
+or
+
+./DockerCli.exe -SwitchWindowsEngine
