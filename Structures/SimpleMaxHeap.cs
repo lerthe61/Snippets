@@ -55,11 +55,11 @@ public class SimpleMaxHeap:
         SiftDown(maxIndex);
     }
 
-    public int GetMax() {
+    public int Peek() {
         return _heap[0];
     }
 
-    public int ExtractMax() {
+    public int Pop() {
         var top = _heap[0];
         _heap[0] = _heap[_size - 1];
         _size--;
@@ -67,7 +67,7 @@ public class SimpleMaxHeap:
         return top;
     }
 
-    public void Add(int elem) {
+    public void Push(int elem) {
         if (_size == _heap.LongLength)
             throw new Exception("Limit is exceeded");
         _size++;
