@@ -1,2 +1,2 @@
 // Downvote all posts (click every 150 ms)
-document.querySelectorAll('button.voteButton[aria-pressed="false"]').forEach((node, index) => setTimeout(() => node.click(), index * 150))
+document.querySelectorAll('button.voteButton[aria-pressed="false"][aria-label="downvote"]').forEach((node, index) => { if(index%2===0){ setTimeout(() => { node.focus(); node.click() }, index * 150); }})
