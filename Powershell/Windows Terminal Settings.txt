@@ -1,0 +1,7 @@
+Windows Terminal
+ Actions -> Show/Hide Quake window -> Shortcut
+ Apperance -> Hide Terminal in Notification Area When Minimized
+Windows Subsytem For Linux
+ wsl --list --online // For available choices
+ wsl --install -d *OptionName* // To install specific distr
+
