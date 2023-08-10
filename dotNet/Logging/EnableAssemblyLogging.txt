@@ -1,0 +1,8 @@
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Fusion
+
+Add:
+
+ForceLog set value to 1 (DWORD )
+LogFailures set value to 1 (DWORD)
+LogResourceBinds set value to 1 (DWORD)
+LogPath (String) set value to folder for logs ie) C:\FusionLog\
