@@ -1,0 +1,2 @@
+# Collecting file versions:
+@("*.dll", "*.exe") | %{ Get-ChildItem . -Filter $_ -Recurse } | sort Name | foreach-object { "{0}`t{1}" -f $_.Name, $_.VersionInfo.FileVersion } | ConvertFrom-String -PropertyNames FileName, FileVersion
